@@ -86,6 +86,37 @@ class app_class{
 
         return str;
     }
+
+    get_str_FucntionAdd(name_module){
+        var str = '<h3 class="card-title">';
+        str += '<a href="admin/'+ name_module +'/add" class="btn btn-dark btn-sm">';
+        str += '<small><i class="fas fa-plus"></i> </small>';
+        str += 'Add New Category';
+        str += '</a></h3>';
+
+        return str;
+    }
+
+    button_add_data(url){
+        var arr_url = url.split('/');
+        return this.get_str_FucntionAdd(arr_url[2]);
+    }
+
+    get_str_input_type_text(name, key){
+        var str = '<div class="form-group"';
+        str += ' <label for="'+key+'">'+name+'</label>';
+        str += '<input type="text" class="form-control" id="'+key+'" name="'+key+'" placeholder="Enter '+name+'">';
+        str += '</div>';
+
+        return str;
+    }
+
+    get_str_form_categories(){
+        var form = '';
+            form  += this.get_str_input_type_text('Name', 'name');
+            form  += this.get_str_input_type_text('Username', 'username');
+        return form;
+    }
 }
 
 module.exports = app_class;

@@ -7,28 +7,23 @@ const kq = new app_class();
 
 router.get('/index', (req, res) => {
 
-    var url = req.originalUrl;
-    //var func_add = kq.get_str_FucntionAdd(url[2]);
-    var buttonAddData = kq.button_add_data(url);
-
-    var main = 'categories/main_categories';
+    var main = 'products/main_products';
     var sidebar = kq.getSideBar(req.originalUrl);
 
-    res.render('index', {main, sidebar, buttonAddData});
+    res.render('index', {main, sidebar});
 });
 
 router.get('/add', (req, res) => {
-   
-    var form = kq.get_str_form_categories();
-    var main = 'categories/add_categories';
+
+    var main = 'products/add_products';
     var sidebar = kq.getSideBar(req.originalUrl);
 
-    res.render('index', {main, sidebar, form});
+    res.render('index', {main, sidebar});
 });
 
 router.get('/edit/:id', (req, res) => {
 
-    var main = 'categories/edit_categories';
+    var main = 'products/edit_products';
     var sidebar = kq.getSideBar(req.originalUrl);
 
     res.render('index', {main, sidebar});
