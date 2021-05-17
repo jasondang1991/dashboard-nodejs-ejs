@@ -9,7 +9,7 @@ router.get('/index', (req, res) => {
 
     var main = 'partials/dashboard';
     var sidebar = kq.getSideBar(req.originalUrl);
-    res.render('index', {main, sidebar});
+    res.render('index', {main, sidebar, name_module:''});
 
 });
 

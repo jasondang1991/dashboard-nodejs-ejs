@@ -4,6 +4,11 @@ class app_class {
         return url.split('/')[2];
     }
 
+
+    get_user_id(url){
+        return url.split('/')[4];
+    }
+
     getSideBarModule(link) {
         var modules = [
             {
@@ -131,7 +136,7 @@ class app_class {
 
     // SHOW USER DATALIST IN INDEX
     // ::::::::::::::::::::::::::::::::::::
-    show_table_data(data = []) {
+    show_table_data(data = [], name_module = '') {
         var str = `<table class="table table-bordered table-striped">
                     <thead>
                     <tr>
@@ -148,7 +153,7 @@ class app_class {
         var i=0;
         data.forEach(e => { i++;
 
-            str += `<tr>
+            str += `<tr id="id_tr_delete_`+e._id+`">
                     <td>` + i +`</td>
                     <td>` + e.username +`</td>
                     <td>` + e.email +`</td>
@@ -156,8 +161,8 @@ class app_class {
                     <td>` + e.create_at +`</td>
                     <td><input class="custom-checkbox" type="checkbox"></td>
                     <td>
-                        <a href="admin/category/edit/1"><i class="fas fa-edit text-dark"></i></a>&nbsp;
-                        <a href="javascript:;" data-toggle="modal" data-target="#modal-default">
+                        <a href="admin/`+ name_module +`/edit/`+e._id+`"><i class="fas fa-edit text-dark"></i></a>&nbsp;
+                        <a href="javascript:;" data-toggle="modal" data-target="#modal-default" onclick="popup('`+e._id+`')">
                             <i class="fas fa-trash text-danger"></i>
                         </a>
                     </td>
@@ -193,9 +198,12 @@ class app_class {
 
     // SHOW FORM ADD NEW USER
     // ::::::::::::::::::::::::::::::::::::
-    show_form(data = []) {
+    show_form(data = [], name_module = '', id_hidden = '') {
         
         var str = `<form action="" role="form" id="submitForm"><div class="card-body">`;
+
+        // Define which add user which update user
+        str += `<input type="hidden" id="id_hidden" value="`+ id_hidden +`"/>`;
 
         data.forEach(e => {
             
@@ -205,7 +213,7 @@ class app_class {
             if (e.element == 'input') {
                 str += `<div class="form-group">
                 <label for="`+ e.name +`">`+ name_replace + asterisks +`</label>
-                <input type="`+ e.type +`" class="form-control" id="`+ e.name +`" placeholder="Enter `+ name_replace +`">
+                <input type="`+ e.type +`" class="form-control" id="`+ e.name +`" placeholder="Enter `+ name_replace +`" value="`+e.value+`" `+e.disabled+`>
                 <span class="err err_`+e.name+`"></span>
                 </div>`;
             }
@@ -213,12 +221,14 @@ class app_class {
 
         str +=`</div><div class="card-footer">
             <button type="submit" class="btn btn-dark">Save</button>
+            <a href="admin/`+name_module+`/index" class="btn btn-warning">Back</a>
         </div>`;
 
         str +=`</form>`;
 
         return str;
     }
+
 }
 
 module.exports = app_class;

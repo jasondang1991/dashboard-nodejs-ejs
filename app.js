@@ -4,7 +4,6 @@ const app = express();
 // Set Up Body Parser
 const ps = require('body-parser');
 app.use(ps.urlencoded({ extended: false }))
-
 app.use(ps.json());
 
 // Set Up Statis Path

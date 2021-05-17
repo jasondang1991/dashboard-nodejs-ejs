@@ -14,7 +14,7 @@ router.get('/index', (req, res) => {
     var main = 'categories/main_categories';
     var sidebar = kq.getSideBar(req.originalUrl);
 
-    res.render('index', {main, sidebar, buttonAddData});
+    res.render('index', {main, sidebar, buttonAddData, name_module:''});
 });
 
 router.get('/add', (req, res) => {

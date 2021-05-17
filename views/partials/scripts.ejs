@@ -55,68 +55,94 @@
   });
 </script> -->
 
-<% if(name_module != '' ){ %>
 
-    <script>
+<script>
 
-        // Function Get Data
-        function getData(name){
-            return $(`#` + name).val();
-        }
+    // Function Get Data
+    function getData(name) {
+        return $(`#` + name).val();
+    }
 
-        // Function Check Data
-        function checkData(name) {
-            return (getData(name) == '') ? false : true;
-        }
+    // Function Check Data
+    function checkData(name) {
+        return (getData(name) == '') ? false : true;
+    }
 
-        // Function AJAX
-        function sendAjax(url, data) {
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: data,
-                success: function(results) {
-                    if (results.kq == 0) {
-                        alert(results.err);
-                    } else {
-                        alert('Insert Successful !');
-                        window.location.href = 'admin/<%=name_module%>/index';
+    // Function AJAX
+    function sendAjax(url, data, type = '') {
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            success: function (results) {
+                if (results.kq == 0) {
+                    alert(results.err);
+                } else {
+                    if (type == '') {
+                        if (results.id_hidden == '') {
+                            alert('Insert Successful !');
+                            window.location.href = 'admin/<%=name_module%>/index';
+                        }
+                        else {
+                            alert('Update Record Successfull !')
+                            window.location.href = 'admin/<%=name_module%>/index';
+                        }
+                    } else if (type == 'popup') {
+                        $('#kq_popup_name').html(results.data.username);
                     }
-                    //console.log(results);
                 }
-            });
-            return false;
-        }
-
-        $(document).ready(function () {
-            $('#submitForm').on('submit', function (e) {
-                e.preventDefault();
-
-                var array = ['username', 'password', 'email', 'phone'];
-
-                var data = {};
-                var kq = 1;
-
-                // Get Data & Check Data
-                array.forEach(e => {
-                    if (checkData(e) == false) {
-                        kq = 0;
-                        $('.err_' + e).text(e + 'is required !');
-                    } else {
-                        $('.err_' + e).text('');
-                        data[e] = getData(e);
-                    }
-                });
-
-                // Final
-                if (kq == 1) {
-                    //alert('Ok');
-                    var url = 'admin/<%=name_module%>/processForm';
-                    //console.log(data);
-                    sendAjax(url, data);
-                }
-            });
+                //console.log(results);
+            }
         });
-    </script>
+        return false;
+    }
 
-<% } %>
+    $(document).ready(function () {
+        $('#submitForm').on('submit', function (e) {
+            e.preventDefault();
+
+            var array = ['username', 'password', 'email', 'phone'];
+
+            var data = {};
+            var kq = 1;
+
+            // Get Data & Check Data
+            array.forEach(e => {
+                if (checkData(e) == false) {
+                    kq = 0;
+                    $('.err_' + e).text(e + 'is required !');
+                } else {
+                    $('.err_' + e).text('');
+                    data[e] = getData(e);
+                }
+            });
+
+            // Id_Hidden into object data
+            data['id_hidden'] = $('#id_hidden').val();
+
+            // Final
+            if (kq == 1) {
+                //alert('Ok');
+                var url = 'admin/<%=name_module%>/processForm';
+                //console.log(data);
+                sendAjax(url, data);
+            }
+        });
+    });
+
+    function popup(id) {
+        // Add Attribute
+        $('#add_atribute_delete').attr('onclick', 'deleteData(' + "'" + id + "'" + ')');
+
+        // Send Ajax
+        var url = 'admin/<%=name_module%>/popup';
+        var data = { 'id': id };
+
+        sendAjax(url, data, 'popup');
+    }
+
+    function deleteData(id) {
+        // Delete Row Table Index Data
+        $('#id_tr_delete_' + id).remove();
+    }
+</script>
